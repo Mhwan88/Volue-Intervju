@@ -1,0 +1,15 @@
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ico
+*.log
+secret.key
+Volue.endpoint
+identifier.sqlite
+.idea/
+wwwroot/lib/
