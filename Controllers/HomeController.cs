@@ -38,11 +38,11 @@ public class HomeController : Controller
             List<Position> positions = new List<Position>();
             foreach (var position in serie["positions"])
             {
-                Position pos = new Position(int.Parse(position["quantity"].ToString()));
+                Position pos = new Position(double.Parse(position["quantity"].ToString()));
                 // Add posistions to database 
                 positions.Add(pos);
             }
-            //  Creat serie S, and add values to series
+            //  Creat object of serie S, and add values to series
             OutputBidApiModel S = new OutputBidApiModel()
             {
                 ExternalId = serie["externalId"].ToString(),

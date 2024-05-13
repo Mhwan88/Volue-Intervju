@@ -55,13 +55,13 @@ namespace VolueEnergyTrader.Models
     }
     public class Position
     {
-        public Position(int quantity)
+        public Position(double quantity)
         {
             Quantity = quantity;
         }
         
         public int Id { get; set; }
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
         
         public int OutputBidApiModelID { get; set; }
         
