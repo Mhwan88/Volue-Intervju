@@ -8,7 +8,7 @@ namespace VolueEnergyTrader.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly OutputBidPacketApiController _outputBidPacketApiController;
+    private readonly OutputBidPacketAPiFetcher _outputBidPacketAPiFetcher;
     
     private ApplicationDbContext _context;
     public List<OutputBidApiModel> SeriesList;
@@ -16,10 +16,10 @@ public class HomeController : Controller
     public List<Position> PositionList;
     public List<BidPacketHistoryApiModel> UpdateHistoryList;
     
-    public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, ILogger<OutputBidPacketApiController> outputLogger)
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, ILogger<OutputBidPacketAPiFetcher> outputLogger)
     {
         _logger = logger;
-        _outputBidPacketApiController = new OutputBidPacketApiController(outputLogger);
+        _outputBidPacketAPiFetcher = new OutputBidPacketAPiFetcher(outputLogger);
         _context = context;
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();    
@@ -29,7 +29,7 @@ public class HomeController : Controller
     {
         
         // Fetching results from API
-        var result = await _outputBidPacketApiController.FetchBidResultsAsync();
+        var result = await _outputBidPacketAPiFetcher.FetchBidResultsAsync();
 
         // Fetching content in series and positions
         List<OutputBidApiModel> series = new List<OutputBidApiModel>();

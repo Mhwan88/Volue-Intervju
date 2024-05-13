@@ -6,7 +6,7 @@ using VolueEnergyTrader.Models;
 
 namespace VolueEnergyTrader.Controllers
 {
-    public class OutputBidPacketApiController
+    public class OutputBidPacketAPiFetcher
     {
         private readonly HttpClient _client;
         private readonly string _customerId = "TestCustomer";
@@ -15,10 +15,10 @@ namespace VolueEnergyTrader.Controllers
         private readonly string _market = "FCR-D-D1";
         private readonly string _country = "Sweden";
         private readonly string _endPoint = File.ReadAllText("Volue.endpoint");
-        private readonly ILogger<OutputBidPacketApiController> _logger;  
+        private readonly ILogger<OutputBidPacketAPiFetcher> _logger;  
 
         
-        public OutputBidPacketApiController(ILogger<OutputBidPacketApiController> logger)
+        public OutputBidPacketAPiFetcher(ILogger<OutputBidPacketAPiFetcher> logger)
         {
             _client = new HttpClient();
             _logger = logger;
