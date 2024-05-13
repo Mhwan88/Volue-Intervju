@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-
-namespace VolueEnergyTrading.Models
+namespace VolueEnergyTrader.Models
 {
-    public class BidResult
+    public class OutputBidPacketApiModel
     {
-        public BidResult()
+        public OutputBidPacketApiModel()
         {
             
         }
@@ -29,12 +28,12 @@ namespace VolueEnergyTrading.Models
         public string Country { get; set; }
 
         [Required]
-        public List<Serie> Series { get; set; }
+        public List<OutputBidApiModel> Series { get; set; }
         
         [Required]
-        public List <UpdateHistory> Updatehistory { get; set; }
+        public List <BidPacketHistoryApiModel> Updatehistory { get; set; }
     }
-    public class Serie
+    public class OutputBidApiModel
     {
         public int Id { get; set; }
         public string ExternalId { get; set; }
@@ -48,6 +47,10 @@ namespace VolueEnergyTrading.Models
         public DateTime StartInterval { get; set; }
         public DateTime EndInterval { get; set; }
         public string Resolution { get; set; }
+        
+        public int OutputBidPacketApiModelID { get; set; }
+
+        public OutputBidPacketApiModel OutputBidPacketApiModel { get; set; }
         public List<Position> Positions { get; set; }
     }
     public class Position
@@ -59,12 +62,20 @@ namespace VolueEnergyTrading.Models
         
         public int Id { get; set; }
         public int Quantity { get; set; }
+        
+        public int OutputBidApiModelID { get; set; }
+        
+        public OutputBidApiModel OutputBidApiModel { get; set; }
     }
-    public class UpdateHistory
+    public class BidPacketHistoryApiModel
     {
         public int Id { get; set; }
         public DateTime UpdateTime { get; set; }
         public string FromStatus { get; set; }
         public string ToStatus { get; set; }
+        
+        public int OutputBidPacketApiModelID { get; set; }
+
+        public OutputBidPacketApiModel OutputBidPacketApiModel { get; set; }
     }
 }

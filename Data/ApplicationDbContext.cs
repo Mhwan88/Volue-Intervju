@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using VolueEnergyTrading.Models;
+using VolueEnergyTrader.Models;
 
 public class ApplicationDbContext : DbContext
 {
@@ -8,8 +8,12 @@ public class ApplicationDbContext : DbContext
         
     }
     
-    public DbSet<BidResult> Bidresults { get; set; }
-    public DbSet<Serie> Series { get; set; }
+    public DbSet<OutputBidPacketApiModel> Bidresults { get; set; }
+    public DbSet<OutputBidApiModel> Series { get; set; }
     public DbSet<Position> Positions { get; set; }
-    public DbSet<UpdateHistory> UpdateHistories { get; set; }
+    public DbSet<BidPacketHistoryApiModel> UpdateHistories { get; set; }
+    
+    
+    
+    
 }

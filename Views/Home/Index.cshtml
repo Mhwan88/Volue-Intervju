@@ -1,8 +1,134 @@
-﻿@{
+﻿@using VolueEnergyTrader.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px; /* Spacing between tables */
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<div cl
+     ass="text-center">
+    <h1 class="display-4">Welcome to the Volue Energy trading tables</h1>
+    
+    <!--Table of bids  -->
+    <table class ="data-table">
+        <tr>
+            <th>
+                Table of bid results
+            </th>
+        </tr>
+        <tr>
+            @{
+                <th>Id</th>    
+                <th>External Id</th>
+                <th>Day</th>
+                <th>Date of last change</th>
+                <th>Market</th>
+                <th>Status</th>
+                <th>Country</th>
+            }
+        </tr>
+        @{
+            foreach (OutputBidPacketApiModel row in ViewBag.BidresultList)
+            {
+                <tr>
+                    <td>@row.Id</td>
+                    <td>@row.ExternalId</td>
+                    <td>@row.Day</td>
+                    <td>@row.DateOfLastChange</td>
+                    <td>@row.Market</td>
+                    <td>@row.Status</td>
+                    <td>@row.Country</td>
+                </tr>
+            }
+        }
+    </table>
+    
+    
+    <!--Table of Series  -->
+    <table class ="data-table">
+        <tr>
+            <th>
+                Table of Series 
+            </th>
+        </tr>
+        <tr>
+            @{
+                <th>ID of Series</th>
+                <th>External Id</th>
+                <th>Customer Id</th>
+                <th>Direction</th>
+                <th>Currency</th>
+                <th>Price Area</th>
+                <th>Asset ID</th>
+                <th>Price</th>
+                <th>Start interval</th>
+                <th>End interval</th>
+                <th>Bid Result ID</th>
+            }
+        </tr>
+        @{
+            foreach (OutputBidApiModel row in ViewBag.SeriesList)
+            {
+                <tr>
+                    <td>@row.Id</td>
+                    <td>@row.ExternalId</td>
+                    <td>@row.CustomerId</td>
+                    <td>@row.Direction</td>
+                    <td>@row.Currency</td>
+                    <td>@row.PriceArea</td>
+                    <td>@row.AssetId</td>
+                    <td>@row.Price</td>
+                    <td>@row.StartInterval</td>
+                    <td>@row.EndInterval</td>
+                    <td>@row.OutputBidPacketApiModelID</td>
+                </tr>
+            }
+        }
+    </table>
+
+    <!--Table of Quantities for each series  -->
+    <table class ="data-table">
+        <tr>
+            <th>
+                Table of Quantities
+            </th>
+        </tr>
+        <tr>
+            @{
+                <th>Output Bid ID</th>
+                <th>Quantity</th>
+            }
+        </tr>
+        @{
+            foreach (Position row in ViewBag.PositionList)
+            {
+        <tr>
+            <td>@row.OutputBidApiModelID</td>
+            <td>@row.Quantity</td>
+            <td>
+                <form method="post" asp-action="IncrementQuantity" asp-controller="Home">
+                    <input type="hidden" name="positionId" value="@row.Id"/>
+                    <input type="submit" value="Add" />
+                </form>
+            </td>
+        </tr>
+            } 
+        }
+    </table>
 </div>

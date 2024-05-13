@@ -3,9 +3,9 @@ using JsonConverter= System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace VolueEnergyTrading.Controller
+namespace VolueEnergyTrader.Controllers
 {
-    public class BidResultController
+    public class OutputBidPacketApiController
     {
         private readonly HttpClient _client;
         private readonly string _customerId = "TestCustomer";
@@ -14,10 +14,13 @@ namespace VolueEnergyTrading.Controller
         private readonly string _market = "FCR-D-D1";
         private readonly string _country = "Sweden";
         private readonly string _endPoint = File.ReadAllText("Volue.endpoint");
+        private readonly ILogger<OutputBidPacketApiController> _logger;  
+
         
-        public BidResultController()
+        public OutputBidPacketApiController(ILogger<OutputBidPacketApiController> logger)
         {
             _client = new HttpClient();
+            _logger = logger;
         }
 
         
@@ -35,8 +38,7 @@ namespace VolueEnergyTrading.Controller
 
             if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine(
-                    $"Request failed with status code: {response.StatusCode} and reason: {response.ReasonPhrase}");
+                _logger.LogError($"Request failed with status code: {response.StatusCode} and reason: {response.ReasonPhrase}");
             }
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -44,12 +46,11 @@ namespace VolueEnergyTrading.Controller
 
             if (result == null)
             {
-                Console.WriteLine("No response");
+                _logger.LogWarning("No response from the server.");
                 return [];
             }
 
-            Console.WriteLine($"this is the result {result}");
-            
+            _logger.LogInformation($"Received response: {result}");
             
             return result;
         }
