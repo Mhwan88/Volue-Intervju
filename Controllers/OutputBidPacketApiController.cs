@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using JsonConverter= System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using VolueEnergyTrader.Models;
 
 namespace VolueEnergyTrader.Controllers
 {
@@ -24,7 +25,7 @@ namespace VolueEnergyTrader.Controllers
         }
 
         
-        public async Task<JObject> FetchBidResultsAsync()
+        public async Task<OutputBidPacketApiModel> FetchBidResultsAsync()
         {
             
             var uri = new UriBuilder("https://vmsn-app-planner3test.azurewebsites.net/status/market/bid-result");
@@ -42,12 +43,11 @@ namespace VolueEnergyTrader.Controllers
             }
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+            var result = JsonConvert.DeserializeObject<OutputBidPacketApiModel>(jsonResponse);
 
             if (result == null)
             {
                 _logger.LogWarning("No response from the server.");
-                return [];
             }
 
             _logger.LogInformation($"Received response: {result}");

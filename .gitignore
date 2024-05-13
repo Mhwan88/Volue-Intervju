@@ -13,3 +13,5 @@ Volue.endpoint
 identifier.sqlite
 .idea/
 wwwroot/lib/
+identifier.sqlite-shm
+identifier.sqlite-wal

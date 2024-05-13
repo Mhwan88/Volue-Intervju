@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VolueEnergyTrader.Models;
@@ -32,30 +33,30 @@ public class HomeController : Controller
 
         // Fetching content in series and positions
         List<OutputBidApiModel> series = new List<OutputBidApiModel>();
-        foreach (var serie in result["series"])
+        foreach (var serie in result.Series)
         {
             // Create new list of positions for each serie
             List<Position> positions = new List<Position>();
-            foreach (var position in serie["positions"])
+            foreach (var position in serie.Positions)
             {
-                Position pos = new Position(double.Parse(position["quantity"].ToString()));
+                Position pos = new Position(double.Parse(position.Quantity.ToString()));
                 // Add posistions to database 
                 positions.Add(pos);
             }
             //  Creat object of serie S, and add values to series
             OutputBidApiModel S = new OutputBidApiModel()
             {
-                ExternalId = serie["externalId"].ToString(),
-                CustomerId = serie["customerId"].ToString(),
-                Status = serie["status"].ToString(),
-                Direction = serie["direction"].ToString(),
-                Currency = serie["currency"].ToString(),
-                PriceArea = serie["priceArea"].ToString(),
-                AssetId = serie["assetId"].ToString(),
-                Price = decimal.Parse(serie["price"].ToString()),
-                StartInterval = DateTime.Parse(serie["startInterval"].ToString()),
-                EndInterval = DateTime.Parse(serie["endInterval"].ToString()),
-                Resolution = serie["resolution"].ToString(),
+                ExternalId = serie.ExternalId,
+                CustomerId = serie.CustomerId,
+                Status = serie.Status,
+                Direction = serie.Direction,
+                Currency = serie.Currency,
+                PriceArea = serie.PriceArea,
+                AssetId = serie.AssetId,
+                Price = serie.Price,
+                StartInterval =serie.StartInterval,
+                EndInterval = serie.EndInterval,
+                Resolution = serie.Resolution,
                 Positions = positions
             };
             // Adds serie to database each itteration
@@ -65,13 +66,13 @@ public class HomeController : Controller
         List<BidPacketHistoryApiModel> histories = new List<BidPacketHistoryApiModel>();
         
         // Fetching elements in Updatehistory
-        foreach (var history in result["updateHistory"])
+        foreach (var history in result.Updatehistory)
         {
             BidPacketHistoryApiModel hist = new BidPacketHistoryApiModel()
             {
-                UpdateTime = DateTime.Parse(history["updateTime"].ToString()),
-                FromStatus = history["fromStatus"].ToString(),
-                ToStatus = history["toStatus"].ToString()
+                UpdateTime = history.UpdateTime,
+                FromStatus = history.FromStatus,
+                ToStatus = history.ToStatus
             };
             histories.Add(hist);
         }
@@ -79,12 +80,12 @@ public class HomeController : Controller
         // Creating object of bidResult
         OutputBidPacketApiModel outputBidPacketApiModel = new OutputBidPacketApiModel()
         {
-            ExternalId = result["externalId"].ToString(),
-            Country = result["country"].ToString(),
-            Day = DateTime.Parse(result["day"].ToString()),
-            DateOfLastChange = DateTime.Parse(result["dateOfLastChange"].ToString()),
-            Market = result["market"].ToString(),
-            Status = result["status"].ToString(),
+            ExternalId = result.ExternalId,
+            Country = result.Country,
+            Day = result.Day,
+            DateOfLastChange = result.DateOfLastChange,
+            Market = result.Market,
+            Status = result.Status,
             Series = series,
             Updatehistory = histories
         };
@@ -108,11 +109,12 @@ public class HomeController : Controller
     {
         // Find the position by ID
         var position = await _context.Positions.FirstOrDefaultAsync(p => p.Id == positionId);
+        Console.WriteLine(@"this is the {position}");
         if (position != null)
         {
             // Increment the quantity
-            position.Quantity += 1;
-
+           position.Quantity += 1;
+           
             // Save changes to the database
             await _context.SaveChangesAsync();
         }
