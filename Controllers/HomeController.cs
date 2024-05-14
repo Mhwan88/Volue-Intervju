@@ -21,8 +21,6 @@ public class HomeController : Controller
         _logger = logger;
         _outputBidPacketAPiFetcher = new OutputBidPacketAPiFetcher(outputLogger);
         _context = context;
-        _context.Database.EnsureDeleted();
-        _context.Database.EnsureCreated();    
     }
 
     public async Task<IActionResult> Index()
@@ -109,7 +107,14 @@ public class HomeController : Controller
     {
         // Find the position by ID
         var position = await _context.Positions.FirstOrDefaultAsync(p => p.Id == positionId);
-        Console.WriteLine(@"this is the {position}");
+        _logger.LogInformation($"Attempting to fetch position with ID: {positionId}");
+        
+        if (position == null)
+        {
+            _logger.LogWarning($"No position found with ID: {positionId}");
+            return NotFound();
+        }
+        
         if (position != null)
         {
             // Increment the quantity

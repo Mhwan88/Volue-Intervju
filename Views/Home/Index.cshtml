@@ -9,7 +9,7 @@
     .data-table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 20px; /* Spacing between tables */
+        margin-bottom: 20px; 
     }
     th, td {
         border: 1px solid black;
@@ -111,6 +111,7 @@
         </tr>
         <tr>
             @{
+                <th>ID</th>
                 <th>Output Bid ID</th>
                 <th>Quantity</th>
             }
@@ -118,16 +119,18 @@
         @{
             foreach (Position row in ViewBag.PositionList)
             {
-        <tr>
-            <td>@row.OutputBidApiModelID</td>
-            <td>@row.Quantity</td>
-            <td>
-                <form method="post" asp-action="IncrementQuantity" asp-controller="Home">
-                    <input type="hidden" name="positionId" value="@row.Id"/>
-                    <input type="submit" value="Add" />
-                </form>
-            </td>
-        </tr>
+                <tr>
+                    <td>@row.Id</td>
+                    <td>@row.OutputBidApiModelID</td>
+                    <td>@row.Quantity</td>
+                    <td>
+                        <form method="post" asp-action="IncrementQuantity" asp-controller="Home">
+                            <input type="hidden" name="positionId" value="@row.Id"/>
+                            <button type="submit">Increment Quantity</button>
+                        </form>
+                    </td>
+                </tr>
+                @Html.AntiForgeryToken()
             } 
         }
     </table>

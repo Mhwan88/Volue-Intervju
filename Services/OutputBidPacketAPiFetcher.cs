@@ -32,7 +32,6 @@ namespace VolueEnergyTrader.Controllers
             uri.Query = $"CustomerId={_customerId}&ForDate={_forDate}&Market={_market}&Country={_country}";
             
             
-            
             var request = new HttpRequestMessage(HttpMethod.Get, uri.Uri);
             request.Headers.Add("ApiKey", _apiKey);
             var response = await _client.SendAsync(request);
