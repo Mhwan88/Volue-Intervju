@@ -25,7 +25,7 @@
      ass="text-center">
     <h1 class="display-4">Welcome to the Volue Energy trading tables</h1>
     
-    <!--Table of bids  -->
+    <!--Table of bids from the database  -->
     <table class ="data-table">
         <tr>
             <th>
@@ -34,13 +34,16 @@
         </tr>
         <tr>
             @{
-                <th>Id</th>    
-                <th>External Id</th>
-                <th>Day</th>
-                <th>Date of last change</th>
-                <th>Market</th>
-                <th>Status</th>
-                <th>Country</th>
+                var tableHeaderBidresult = ViewBag.BidresultList[0];
+                var includeKeysList = new List<string> { "Id", "ExternalId", "Day", "DateOfLastChange", "Market", "Status", "Country" };
+                foreach (var key in tableHeaderBidresult.GetType().GetProperties())
+                {
+                    if (includeKeysList.Contains(key.Name))
+                    {
+                        <th>@key.Name</th>
+                    }
+                    
+                }
             }
         </tr>
         @{
@@ -69,17 +72,15 @@
         </tr>
         <tr>
             @{
-                <th>ID of Series</th>
-                <th>External Id</th>
-                <th>Customer Id</th>
-                <th>Direction</th>
-                <th>Currency</th>
-                <th>Price Area</th>
-                <th>Asset ID</th>
-                <th>Price</th>
-                <th>Start interval</th>
-                <th>End interval</th>
-                <th>Bid Result ID</th>
+                var tableHeaderSeries = ViewBag.SeriesList[0];
+                var includeHeaderList = new List<string> { "Id", "ExternalId", "CustomerId", "Status", "Direction", "Currency", "PriceArea", "AssetId", "Price", "StartInterval", "EndInterval", "OutputBidPacketApiModelID" };
+                foreach (var keyHeader in tableHeaderSeries.GetType().GetProperties())
+                {
+                    if (includeHeaderList.Contains(keyHeader.Name))
+                    {
+                        <th>@keyHeader.Name</th>
+                    }
+                }
             }
         </tr>
         @{
@@ -89,6 +90,7 @@
                     <td>@row.Id</td>
                     <td>@row.ExternalId</td>
                     <td>@row.CustomerId</td>
+                    <td>@row.Status</td>
                     <td>@row.Direction</td>
                     <td>@row.Currency</td>
                     <td>@row.PriceArea</td>
@@ -134,4 +136,32 @@
             } 
         }
     </table>
+
+    <table class ="data-table">
+        <tr>
+            <th>
+                Table of Update history
+            </th>
+        </tr>
+        <tr>
+            @{
+            <th>Update Time</th>
+            <th>From status</th>
+            <th>To Status</th>
+            <th>Bid result id</th>
+            }
+        </tr>
+        @{
+        foreach (BidPacketHistoryApiModel row in ViewBag.UpdateHistoryList)
+            {
+                <tr>
+                <td>@row.UpdateTime</td>
+                <td>@row.ToStatus</td>
+                <td>@row.ToStatus</td>
+                <td>@row.OutputBidPacketApiModelID</td>
+                </tr>
+            }
+        }
+    </table>
+    
 </div>

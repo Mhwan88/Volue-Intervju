@@ -90,7 +90,7 @@ public class HomeController : Controller
 
         // Adding Bidresults to database and save changes
         _context.Bidresults.Add(outputBidPacketApiModel);
-        _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
 
         // Adding content in ViewBag to fetch in HTML
