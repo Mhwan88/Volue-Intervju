@@ -10,7 +10,7 @@ namespace VolueEnergyTrader.Controllers
     {
         private readonly HttpClient _client;
         private readonly string _customerId = "TestCustomer";
-        private readonly string _apiKey = File.ReadAllText("secret.key");
+        private readonly string _apiKey = Environment.GetEnvironmentVariable("APIKEY");
         private readonly string _forDate = "2024-02-03";
         private readonly string _market = "FCR-D-D1";
         private readonly string _country = "Sweden";
