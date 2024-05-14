@@ -7,6 +7,7 @@ namespace VolueEnergyTrader.Models
         {
             
         }
+        // Primary key
         public int Id { get; set; }
         
         [Required]
@@ -35,6 +36,7 @@ namespace VolueEnergyTrader.Models
     }
     public class OutputBidApiModel
     {
+        // Primary key
         public int Id { get; set; }
         public string ExternalId { get; set; }
         public string CustomerId { get; set; }
@@ -48,9 +50,9 @@ namespace VolueEnergyTrader.Models
         public DateTime EndInterval { get; set; }
         public string Resolution { get; set; }
         
+        // Foreign key linking back to OutputBidPacketApiModel
         public int OutputBidPacketApiModelID { get; set; }
-
-        public OutputBidPacketApiModel OutputBidPacketApiModel { get; set; }
+        
         public List<Position> Positions { get; set; }
     }
     public class Position
@@ -60,22 +62,26 @@ namespace VolueEnergyTrader.Models
             Quantity = quantity;
         }
         
+        // Primary key
         public int Id { get; set; }
         public double Quantity { get; set; }
         
+        // Foreign key to the OutputBidApiModel
         public int OutputBidApiModelID { get; set; }
         
-        public OutputBidApiModel OutputBidApiModel { get; set; }
+
     }
     public class BidPacketHistoryApiModel
     {
+        // primary key
         public int Id { get; set; }
         public DateTime UpdateTime { get; set; }
         public string FromStatus { get; set; }
         public string ToStatus { get; set; }
         
+        // Foreign Key OutputBidPacketApiModel
         public int OutputBidPacketApiModelID { get; set; }
 
-        public OutputBidPacketApiModel OutputBidPacketApiModel { get; set; }
+
     }
 }

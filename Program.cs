@@ -14,13 +14,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 var app = builder.Build();
 
-
+// Create database
 if (app.Environment.IsDevelopment())
 {
     InitializeDatabase(app);
 }
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -41,6 +39,7 @@ app.MapControllerRoute(
 
 app.Run();
 
+// void method to initialize database 
 void InitializeDatabase(WebApplication app)
 {
     using (var scope = app.Services.CreateScope())

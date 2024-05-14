@@ -11,6 +11,8 @@ public class HomeController : Controller
     private readonly OutputBidPacketAPiFetcher _outputBidPacketAPiFetcher;
     
     private ApplicationDbContext _context;
+    
+    // Lists to hold various data models for view rendering.
     public List<OutputBidApiModel> SeriesList;
     public List<OutputBidPacketApiModel> BidResultList;
     public List<Position> PositionList;
@@ -25,23 +27,24 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        
-        // Fetching results from API
+        // Fetch bid results asynchronously from a remote API.
         var result = await _outputBidPacketAPiFetcher.FetchBidResultsAsync();
 
-        // Fetching content in series and positions
+        
+        // Process each series item in the fetched result.
         List<OutputBidApiModel> series = new List<OutputBidApiModel>();
         foreach (var serie in result.Series)
         {
-            // Create new list of positions for each serie
             List<Position> positions = new List<Position>();
             foreach (var position in serie.Positions)
             {
+                // Create a new position object by parsing the quantity.
                 Position pos = new Position(double.Parse(position.Quantity.ToString()));
-                // Add posistions to database 
+               
+                // Add each position to the list.
                 positions.Add(pos);
             }
-            //  Creat object of serie S, and add values to series
+            // Create and configure a new serie model S from the fetched data.
             OutputBidApiModel S = new OutputBidApiModel()
             {
                 ExternalId = serie.ExternalId,
@@ -57,13 +60,13 @@ public class HomeController : Controller
                 Resolution = serie.Resolution,
                 Positions = positions
             };
-            // Adds serie to database each itteration
+            // Add the series to the list.
             series.Add(S);
         }
         
+        // Process update history similarly.
         List<BidPacketHistoryApiModel> histories = new List<BidPacketHistoryApiModel>();
         
-        // Fetching elements in Updatehistory
         foreach (var history in result.Updatehistory)
         {
             BidPacketHistoryApiModel hist = new BidPacketHistoryApiModel()
@@ -75,7 +78,7 @@ public class HomeController : Controller
             histories.Add(hist);
         }
         
-        // Creating object of bidResult
+        // Compile all fetched and processed data into one model.
         OutputBidPacketApiModel outputBidPacketApiModel = new OutputBidPacketApiModel()
         {
             ExternalId = result.ExternalId,
@@ -88,12 +91,12 @@ public class HomeController : Controller
             Updatehistory = histories
         };
 
-        // Adding Bidresults to database and save changes
+        // Add the complete model to the database context and save changes.
         _context.Bidresults.Add(outputBidPacketApiModel);
         await _context.SaveChangesAsync();
 
-
-        // Adding content in ViewBag to fetch in HTML
+        
+        // Store data in ViewBag for use in views.
         ViewBag.SeriesList = _context.Series.ToList();
         ViewBag.BidresultList = _context.Bidresults.ToList();
         ViewBag.PositionList = _context.Positions.ToList();
@@ -101,11 +104,11 @@ public class HomeController : Controller
         return View();
     }
 
-    
+    // Action method to increment the quantity of a position, handled via POST request.
     [HttpPost]
     public async Task<IActionResult> IncrementQuantity(int positionId)
     {
-        // Find the position by ID
+        // Attempt to find the position by ID.
         var position = await _context.Positions.FirstOrDefaultAsync(p => p.Id == positionId);
         _logger.LogInformation($"Attempting to fetch position with ID: {positionId}");
         
@@ -117,10 +120,9 @@ public class HomeController : Controller
         
         if (position != null)
         {
-            // Increment the quantity
+            // Increment the position's quantity by one.
            position.Quantity += 1;
            
-            // Save changes to the database
             await _context.SaveChangesAsync();
         }
 

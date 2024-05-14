@@ -33,6 +33,7 @@
             </th>
         </tr>
         <tr>
+            <!--Fetching headers  -->
             @{
                 var tableHeaderBidresult = ViewBag.BidresultList[0];
                 var includeKeysList = new List<string> { "Id", "ExternalId", "Day", "DateOfLastChange", "Market", "Status", "Country" };
@@ -42,11 +43,12 @@
                     {
                         <th>@key.Name</th>
                     }
-                    
+
                 }
             }
         </tr>
         @{
+            <!--Fetching values  -->
             foreach (OutputBidPacketApiModel row in ViewBag.BidresultList)
             {
                 <tr>
@@ -71,6 +73,7 @@
             </th>
         </tr>
         <tr>
+            <!--Fetching headers  -->
             @{
                 var tableHeaderSeries = ViewBag.SeriesList[0];
                 var includeHeaderList = new List<string> { "Id", "ExternalId", "CustomerId", "Status", "Direction", "Currency", "PriceArea", "AssetId", "Price", "StartInterval", "EndInterval", "OutputBidPacketApiModelID" };
@@ -84,6 +87,7 @@
             }
         </tr>
         @{
+            <!--Fetching values  -->
             foreach (OutputBidApiModel row in ViewBag.SeriesList)
             {
                 <tr>
@@ -112,6 +116,7 @@
             </th>
         </tr>
         <tr>
+            <!--Hard coded headers  -->
             @{
                 <th>ID</th>
                 <th>Output Bid ID</th>
@@ -119,6 +124,7 @@
             }
         </tr>
         @{
+            <!--Fetching values  -->
             foreach (Position row in ViewBag.PositionList)
             {
                 <tr>
@@ -137,6 +143,7 @@
         }
     </table>
 
+    <!--Table of update history for each bid result  -->
     <table class ="data-table">
         <tr>
             <th>
@@ -144,14 +151,16 @@
             </th>
         </tr>
         <tr>
+            <!--Hard coded headers  -->
             @{
-            <th>Update Time</th>
-            <th>From status</th>
-            <th>To Status</th>
-            <th>Bid result id</th>
+                <th>Update Time</th>
+                <th>From status</th>
+                <th>To Status</th>
+                <th>Bid result id</th>
             }
         </tr>
         @{
+            <!--Fetching values  -->
         foreach (BidPacketHistoryApiModel row in ViewBag.UpdateHistoryList)
             {
                 <tr>
